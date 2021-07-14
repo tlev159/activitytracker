@@ -1,0 +1,15 @@
+GET http://localhost:8080/api/types
+Accept: application/json
+
+###
+POST http://localhost:8080/api/appointments
+Content-Type: application/json
+
+{
+  "taxNumber": "8387594407",
+  "type": "006",
+  "start": "2021-08-01T10:30",
+  "end": "2021-08-01T11:00"
+}
+
+###
