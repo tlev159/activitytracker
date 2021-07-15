@@ -29,13 +29,6 @@ public class Activity {
         this.type = type;
     }
 
-//    public Activity(Long id, LocalDateTime startTime, String desc, ActivityType type) {
-//        this.id = id;
-//        this.startTime = startTime;
-//        this.desc = desc;
-//        this.type = type;
-//    }
-
     public Long getId() {
         return id;
     }
