@@ -4,8 +4,6 @@ import activitytracker.Activity;
 import activitytracker.ActivityDao;
 import activitytracker.ActivityType;
 import org.flywaydb.core.Flyway;
-import org.junit.Before;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mariadb.jdbc.MariaDbDataSource;
