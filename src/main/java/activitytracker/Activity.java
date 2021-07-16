@@ -8,16 +8,17 @@ import java.time.LocalDateTime;
 public class Activity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "Act_Gen")
+    @TableGenerator(name = "Act_Gen", table = "act_id_gen", pkColumnName = "id_gen", valueColumnName = "id_val")
     private Long id;
 
-    @Column(name = "start_time", nullable = false)
+    @Column(name = "start_time")
     private LocalDateTime startTime;
 
-    @Column(name = "description", nullable = false, length = 200)
+    @Column(name = "description")
     private String desc;
 
-    @Column(name = "activity_type", length = 20)
+    @Column(name = "activity_type")
     @Enumerated(EnumType.STRING)
     private ActivityType type;
 
