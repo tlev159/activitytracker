@@ -12,13 +12,13 @@ public class Activity {
     @TableGenerator(name = "Act_Gen", table = "act_id_gen", pkColumnName = "id_gen", valueColumnName = "id_val")
     private Long id;
 
-    @Column(name = "start_time")
+    @Column(name = "start_time", nullable = false)
     private LocalDateTime startTime;
 
-    @Column(name = "description")
+    @Column(name = "description", nullable = false, length = 200)
     private String desc;
 
-    @Column(name = "activity_type")
+    @Column(name = "activity_type", nullable = false, length = 20)
     @Enumerated(EnumType.STRING)
     private ActivityType type;
 
