@@ -22,16 +22,11 @@ public class ActivityDao {
 
     public Activity findActivityById(long id) {
         EntityManager em = entityManagerFactory.createEntityManager();
-        Activity activity = em.find(Activity.class, id);
-        em.close();
-        return activity;
+        return em.find(Activity.class, id);
     }
 
     public List<Activity> listActivities() {
         EntityManager em = entityManagerFactory.createEntityManager();
-        em.getTransaction().begin();
-        List<Activity> activities = em.createQuery("SELECT a FROM Activity a ORDER BY a.startTime", Activity.class).getResultList();
-        em.close();
-        return activities;
+        return em.createQuery("SELECT a FROM Activity a ORDER BY a.startTime", Activity.class).getResultList();
     }
 }
