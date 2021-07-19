@@ -12,42 +12,42 @@ public class ActivityTrackerMain {
 
         EntityManagerFactory factory = Persistence.createEntityManagerFactory("pu");
         EntityManager entityManager = factory.createEntityManager();
-        entityManager.getTransaction().begin();
-
-        Activity activity1 = new Activity(LocalDateTime.of(2021,07,01,10,30), "Basketball on the beach", ActivityType.BASKETBALL);
-        Activity activity2 = new Activity(LocalDateTime.of(2021,07,02,12,45), "Biking to the Grandma", ActivityType.BIKING);
-
-        entityManager.persist(activity1);
-        entityManager.persist(activity2);
-
-        entityManager.getTransaction().commit();
-
-        long id = activity1.getId();
-
-        Activity activity = entityManager.find(Activity.class, id);
-
-        entityManager.getTransaction().begin();
-        activity = entityManager.find(Activity.class, id);
-        activity.setDesc("Basketball at home");
-        entityManager.getTransaction().commit();
-
-        List<Activity> activities = entityManager.createQuery("SELECT a FROM Activity a", Activity.class)
-                .getResultList();
-        System.out.println(activities);
-
-        entityManager.getTransaction().begin();
-
-        activity = entityManager.find(Activity.class, id);
-        entityManager.remove(activity);
-        entityManager.getTransaction().commit();
-
-        activities = entityManager.createQuery("SELECT a FROM Activity a", Activity.class)
-                .getResultList();
-        System.out.println(activities);
-
-
-        entityManager.close();
-        factory.close();
+//        entityManager.getTransaction().begin();
+//
+//        Activity activity1 = new Activity(LocalDateTime.of(2021,07,01,10,30), "Basketball on the beach", ActivityType.BASKETBALL);
+//        Activity activity2 = new Activity(LocalDateTime.of(2021,07,02,12,45), "Biking to the Grandma", ActivityType.BIKING);
+//
+//        entityManager.persist(activity1);
+//        entityManager.persist(activity2);
+//
+//        entityManager.getTransaction().commit();
+//
+//        entityManager.getTransaction().begin();
+//
+//        long id = activity1.getId();
+//
+//        Activity activity = entityManager.find(Activity.class, id);
+//
+//        activity.setDesc("Basketball at home");
+//        entityManager.getTransaction().commit();
+//
+//        List<Activity> activities = entityManager.createQuery("SELECT a FROM Activity a", Activity.class)
+//                .getResultList();
+//        System.out.println("összes: " + activities);
+//
+//        entityManager.getTransaction().begin();
+//
+//        activity = entityManager.find(Activity.class, 2L);
+//        entityManager.remove(activity);
+//        entityManager.getTransaction().commit();
+//
+//        activities = entityManager.createQuery("SELECT a FROM Activity a", Activity.class)
+//                .getResultList();
+//        System.out.println("törölt elemes: " + activities);
+//
+//
+//        entityManager.close();
+//        factory.close();
 
     }
 

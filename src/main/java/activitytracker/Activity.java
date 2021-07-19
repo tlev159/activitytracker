@@ -22,6 +22,12 @@ public class Activity {
     @Enumerated(EnumType.STRING)
     private ActivityType type;
 
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
     public Activity() {
     }
 
@@ -61,6 +67,24 @@ public class Activity {
 
     public void setType(ActivityType type) {
         this.type = type;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    @PrePersist
+    private void setCreatedAt() {
+        this.createdAt = LocalDateTime.now();
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    @PostUpdate
+    public void setUpdatedAt() {
+        this.updatedAt = LocalDateTime.now();
     }
 
     @Override
