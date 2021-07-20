@@ -22,8 +22,10 @@ public class ActivityDao {
 
     public Activity findActivityById(long id) {
         EntityManager em = entityManagerFactory.createEntityManager();
-        em.getTransaction().begin();
-        return em.find(Activity.class, id);
+//        em.getTransaction().begin();
+        Activity activity = em.find(Activity.class, id);
+        em.close();
+        return activity;
     }
 
     public List<Activity> listActivities() {
@@ -38,5 +40,14 @@ public class ActivityDao {
         activity.setUpdatedAt();
         activity.setDesc(desc);
         em.getTransaction().commit();
+    }
+
+    public Activity findActivityByIdWithLabels(long id) {
+        EntityManager em = entityManagerFactory.createEntityManager();
+        Activity activity = em.createQuery("SELECT a FROM Activity a join fetch a.labels WHERE id = :id", Activity.class)
+                .setParameter("id", id)
+                .getSingleResult();
+        em.close();
+        return activity;
     }
 }

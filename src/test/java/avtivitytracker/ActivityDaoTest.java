@@ -13,6 +13,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -79,4 +80,24 @@ public class ActivityDaoTest {
         System.out.println(activities);
         assertThat("Streetball at the Discothek", equalTo(activities.get(1).getDesc()));
     }
+
+    @Test
+    public void testAddLabelThenListById() {
+        Activity activity1 = new Activity(LocalDateTime.now(), "Marathon running in Munich", ActivityType.RUNNING);
+        activity1.setLabels(new ArrayList<>(List.of("running", "water", "shoe", "isotonic water")));
+
+        Activity activity2 = new Activity(LocalDateTime.now(), "Biking in the town", ActivityType.BIKING);
+        activity2.setLabels(new ArrayList<>(List.of("bike", "wheel", "pump")));
+
+        activityDao.saveActivity(activity1);
+        activityDao.saveActivity(activity2);
+
+        Activity anotherActivity = activityDao.findActivityByIdWithLabels(activity1.getId());
+
+        System.out.println(anotherActivity.getLabels());
+        assertThat("water", equalTo(anotherActivity.getLabels().get(1)));
+    }
+
+
+
 }
