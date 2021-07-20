@@ -1,6 +1,7 @@
 package activitytracker;
 
 import javax.persistence.*;
+import javax.sound.midi.Track;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +36,20 @@ public class Activity {
     @Column(name = "label")
     private List<String> labels = new ArrayList<>();
 
+    @ElementCollection
+    @CollectionTable(name = "trackpoints", joinColumns = @JoinColumn(name = "trackpoint_id"))
+    @Column(name = "trackpoint")
+    private List<TrackPoint> trackPoints = new ArrayList<>();
+
     public Activity() {
+    }
+
+    public List<TrackPoint> getTrackPoints() {
+        return trackPoints;
+    }
+
+    public void setTrackPoints(List<TrackPoint> trackPoints) {
+        this.trackPoints = trackPoints;
     }
 
     public Activity(LocalDateTime startTime, String desc, ActivityType type) {

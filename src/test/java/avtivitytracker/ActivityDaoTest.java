@@ -3,6 +3,7 @@ package avtivitytracker;
 import activitytracker.Activity;
 import activitytracker.ActivityDao;
 import activitytracker.ActivityType;
+import activitytracker.TrackPoint;
 import org.flywaydb.core.Flyway;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,6 +13,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -98,6 +100,18 @@ public class ActivityDaoTest {
         assertThat("water", equalTo(anotherActivity.getLabels().get(1)));
     }
 
+    @Test
+    public void testTrackPoints() {
+        Activity activity = new Activity(LocalDateTime.now(), "Marathon running in Munich", ActivityType.RUNNING);
+        activity.setTrackPoints(new ArrayList<>(List.of(
+                new TrackPoint(LocalDate.of(2021, 07, 13), 41.2, 45.5),
+                new TrackPoint(LocalDate.of(2021, 07, 16), 39.6, 44.1),
+                new TrackPoint(LocalDate.of(2021, 07, 20), 40.5, 46.2)
+        )));
 
+        activityDao.saveActivity(activity);
+        Activity anotherActivity = activityDao.getTrackPoints(activity.getId());
+        assertThat(LocalDate.of(2021, 07, 16), equalTo(anotherActivity.getTrackPoints().get(1).getTime()));
+    }
 
 }
