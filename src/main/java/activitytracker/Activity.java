@@ -36,10 +36,16 @@ public class Activity {
     @Column(name = "label")
     private List<String> labels = new ArrayList<>();
 
-    @ElementCollection
-    @CollectionTable(name = "trackpoints", joinColumns = @JoinColumn(name = "trackpoint_id"))
-    @Column(name = "trackpoint")
-    private List<TrackPoint> trackPoints = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.PERSIST)
+    private List<TrackPoint> trackPoints;
+
+    public void addTrackPoint(TrackPoint trackPoint) {
+        if (trackPoints == null) {
+            trackPoints = new ArrayList<>();
+        }
+        trackPoints.add(trackPoint);
+        trackPoint.setActivity(this);
+    }
 
     public Activity() {
     }

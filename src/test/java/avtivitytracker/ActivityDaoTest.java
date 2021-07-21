@@ -1,9 +1,6 @@
 package avtivitytracker;
 
-import activitytracker.Activity;
-import activitytracker.ActivityDao;
-import activitytracker.ActivityType;
-import activitytracker.TrackPoint;
+import activitytracker.*;
 import org.flywaydb.core.Flyway;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,6 +21,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class ActivityDaoTest {
 
     private ActivityDao activityDao;
+
+    private TrackPointDao trackPointDao;
 //    private MariaDbDataSource dataSource;
 
     @BeforeEach
@@ -47,6 +46,7 @@ public class ActivityDaoTest {
 
         EntityManagerFactory factory = Persistence.createEntityManagerFactory("pu");
         activityDao = new ActivityDao(factory);
+        trackPointDao = new TrackPointDao(factory);
 
     }
 
@@ -101,7 +101,7 @@ public class ActivityDaoTest {
     }
 
     @Test
-    public void testTrackPoints() {
+    public void testAddTrackPointsThenListById() {
         Activity activity = new Activity(LocalDateTime.now(), "Marathon running in Munich", ActivityType.RUNNING);
         activity.setTrackPoints(new ArrayList<>(List.of(
                 new TrackPoint(LocalDate.of(2021, 07, 13), 41.2, 45.5),
@@ -110,8 +110,24 @@ public class ActivityDaoTest {
         )));
 
         activityDao.saveActivity(activity);
-        Activity anotherActivity = activityDao.getTrackPoints(activity.getId());
+        Activity anotherActivity = activityDao.findActivityByIdWithTrackPoints(activity.getId());
         assertThat(LocalDate.of(2021, 07, 16), equalTo(anotherActivity.getTrackPoints().get(1).getTime()));
     }
+
+//    @Test
+//    public void testAddTrackPointListThenListById() {
+//        TrackPoint trackPoint1 = new TrackPoint(LocalDate.of(2021, 07, 13), 41.2, 45.5);
+//        TrackPoint trackPoint2 = new TrackPoint(LocalDate.of(2021, 07, 16), 39.6, 44.1);
+//        TrackPoint trackPoint3 = new TrackPoint(LocalDate.of(2021, 07, 20), 40.5, 46.2);
+//
+//        Activity activity = new Activity(LocalDateTime.now(), "Marathon running in Munich", ActivityType.RUNNING);
+//        activity.addTrackPoint(trackPoint1);
+//        activity.addTrackPoint(trackPoint2);
+//        activity.addTrackPoint(trackPoint3);
+//
+//        activityDao.saveActivity(activity);
+//        Activity anotherActivity = activityDao.findActivityByIdWithTrackPoints(activity.getId());
+//        assertThat(LocalDate.of(2021, 07, 16), equalTo(anotherActivity.getTrackPoints().get(1).getTime()));
+//    }
 
 }

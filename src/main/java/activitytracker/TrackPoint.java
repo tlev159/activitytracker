@@ -1,20 +1,24 @@
 package activitytracker;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDate;
 
-@Embeddable
+@Entity
+@Table(name = "track_points")
 public class TrackPoint {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     private LocalDate time;
 
-    @Column(name = "latitude")
     private double lat;
 
-    @Column(name = "longitude")
     private double lon;
+
+    @ManyToOne
+    private Activity activity;
 
     public TrackPoint() {
     }
@@ -23,6 +27,22 @@ public class TrackPoint {
         this.time = time;
         this.lat = lat;
         this.lon = lon;
+    }
+
+    public Activity getActivity() {
+        return activity;
+    }
+
+    public void setActivity(Activity activity) {
+        this.activity = activity;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public LocalDate getTime() {
@@ -49,12 +69,4 @@ public class TrackPoint {
         this.lon = lon;
     }
 
-    @Override
-    public String toString() {
-        return "TrackPoint{" +
-                "time=" + time +
-                ", lat=" + lat +
-                ", lon=" + lon +
-                '}';
-    }
 }
