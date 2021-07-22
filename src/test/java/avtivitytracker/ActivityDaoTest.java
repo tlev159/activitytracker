@@ -141,4 +141,53 @@ public class ActivityDaoTest {
                 .contains(41.2, 41.5);
     }
 
+    @Test
+    public void testFindTrackPointCoordinatesByDate() {
+        TrackPoint trackPoint1 = new TrackPoint(LocalDate.of(2020, 07, 13), 41.2, 45.5);
+        TrackPoint trackPoint2 = new TrackPoint(LocalDate.of(2019, 07, 16), 39.6, 44.1);
+        TrackPoint trackPoint3 = new TrackPoint(LocalDate.of(2016, 07, 20), 40.5, 46.2);
+        TrackPoint trackPoint4 = new TrackPoint(LocalDate.of(2017, 07, 21), 41.5, 47.2);
+        TrackPoint trackPoint5 = new TrackPoint(LocalDate.of(2021, 07, 22), 38.5, 41.2);
+
+        Activity activity = new Activity(LocalDateTime.now(), "Marathon running in Munich", ActivityType.RUNNING);
+        activity.setLabels(new ArrayList<>(List.of("bike", "wheel", "pump")));
+
+        activity.addTrackPoint(trackPoint1);
+        activity.addTrackPoint(trackPoint2);
+        activity.addTrackPoint(trackPoint3);
+        activity.addTrackPoint(trackPoint4);
+        activity.addTrackPoint(trackPoint5);
+
+        activityDao.saveActivity(activity);
+        List<CoordinateDTO> coordinates = activityDao.findTrackPointCoordinatesByDate(LocalDate.of(2018, 01, 01), 1, 50);
+        assertThat(coordinates)
+                .extracting(CoordinateDTO::getLat)
+                .containsExactly(39.6, 41.2, 38.5);
+    }
+
+    @Test
+    public void testFindTrackPointCoordinatesByDateWithMapping() {
+        TrackPoint trackPoint1 = new TrackPoint(LocalDate.of(2020, 07, 13), 41.2, 45.5);
+        TrackPoint trackPoint2 = new TrackPoint(LocalDate.of(2019, 07, 16), 39.6, 44.1);
+        TrackPoint trackPoint3 = new TrackPoint(LocalDate.of(2016, 07, 20), 40.5, 46.2);
+        TrackPoint trackPoint4 = new TrackPoint(LocalDate.of(2017, 07, 21), 41.5, 47.2);
+        TrackPoint trackPoint5 = new TrackPoint(LocalDate.of(2021, 07, 22), 38.5, 41.2);
+
+        Activity activity = new Activity(LocalDateTime.now(), "Marathon running in Munich", ActivityType.RUNNING);
+        activity.setLabels(new ArrayList<>(List.of("bike", "wheel", "pump")));
+
+        activity.addTrackPoint(trackPoint1);
+        activity.addTrackPoint(trackPoint2);
+        activity.addTrackPoint(trackPoint3);
+        activity.addTrackPoint(trackPoint4);
+        activity.addTrackPoint(trackPoint5);
+
+        activityDao.saveActivity(activity);
+
+        List<CoordinateDTO> coordinatesOnlyTwo = activityDao.findTrackPointCoordinatesByDate(LocalDate.of(2018, 01, 01), 0, 2);
+        System.out.println(coordinatesOnlyTwo);
+        assertThat(coordinatesOnlyTwo)
+                .extracting(CoordinateDTO::getLat)
+                .containsExactly(39.6, 41.2);
+    }
 }
