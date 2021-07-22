@@ -13,10 +13,13 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import static org.assertj.core.api.Assertions.tuple;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -189,5 +192,34 @@ public class ActivityDaoTest {
         assertThat(coordinatesOnlyTwo)
                 .extracting(CoordinateDTO::getLat)
                 .containsExactly(39.6, 41.2);
+    }
+
+    @Test
+    public void testFindTrackPointCountByActivity() {
+        activityDao.saveActivity(new Activity(LocalDateTime.now(), "Biking in the town", ActivityType.BIKING));
+        activityDao.saveActivity(new Activity(LocalDateTime.now(), "Basketball on the street", ActivityType.BASKETBALL));
+        activityDao.saveActivity(new Activity(LocalDateTime.now(), "Marathon running in Munich", ActivityType.RUNNING));
+        activityDao.saveActivity(new Activity(LocalDateTime.now(), "Biking in the town", ActivityType.BIKING));
+        activityDao.saveActivity(new Activity(LocalDateTime.now(), "Basketball on the street", ActivityType.BASKETBALL));
+        activityDao.saveActivity(new Activity(LocalDateTime.now(), "Marathon running in Munich", ActivityType.RUNNING));
+        activityDao.saveActivity(new Activity(LocalDateTime.now(), "Biking in the town", ActivityType.BIKING));
+        activityDao.saveActivity(new Activity(LocalDateTime.now(), "Basketball on the street", ActivityType.BASKETBALL));
+        activityDao.saveActivity(new Activity(LocalDateTime.now(), "Marathon running in Munich", ActivityType.RUNNING));
+        activityDao.saveActivity(new Activity(LocalDateTime.now(), "Marathon running in Munich", ActivityType.RUNNING));
+        activityDao.saveActivity(new Activity(LocalDateTime.now(), "Marathon running in Munich", ActivityType.RUNNING));
+        activityDao.saveActivity(new Activity(LocalDateTime.now(), "Marathon running in Munich", ActivityType.RUNNING));
+        activityDao.saveActivity(new Activity(LocalDateTime.now(), "Marathon running in Munich", ActivityType.RUNNING));
+        activityDao.saveActivity(new Activity(LocalDateTime.now(), "Basketball on the street", ActivityType.BASKETBALL));
+        activityDao.saveActivity(new Activity(LocalDateTime.now(), "Basketball on the street", ActivityType.BASKETBALL));
+        activityDao.saveActivity(new Activity(LocalDateTime.now(), "Biking in the town", ActivityType.BIKING));
+
+        List<Object[]> typesData = activityDao.findTrackPointCountByActivity();
+
+        assertThat(typesData)
+            .hasSize(3);
+        assertThat("BASKETBALL", equalTo(typesData.get(0)[0].toString()));
+        assertThat(5L, equalTo(typesData.get(0)[1]));
+        assertThat("RUNNING", equalTo(typesData.get(2)[0].toString()));
+        assertThat(7L, equalTo(typesData.get(2)[1]));
     }
 }

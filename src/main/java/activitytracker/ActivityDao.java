@@ -71,4 +71,12 @@ public class ActivityDao {
         em.close();
         return coordinateDTOS;
     }
+
+    public List<Object[]> findTrackPointCountByActivity() {
+        EntityManager em = entityManagerFactory.createEntityManager();
+        List<Object[]> sumOfEachType = em.createQuery("select a.type, count(a) from Activity a group by a.type order by a.type")
+                .getResultList();
+        em.close();
+        return sumOfEachType;
+    }
 }
