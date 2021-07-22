@@ -69,4 +69,12 @@ public class TrackPoint {
         this.lon = lon;
     }
 
+    @Override
+    public String toString() {
+        return "TrackPoint{" +
+                "time=" + time +
+                ", lat=" + lat +
+                ", lon=" + lon +
+                '}';
+    }
 }

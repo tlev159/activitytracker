@@ -52,7 +52,7 @@ public class ActivityDao {
 
     public Activity findActivityByIdWithTrackPoints(long id) {
         EntityManager em = entityManagerFactory.createEntityManager();
-        Activity activity = em.createQuery("SELECT a FROM Activity a join fetch a.trackPoints WHERE id = :id ORDER BY time", Activity.class)
+        Activity activity = em.createQuery("SELECT a FROM Activity a join fetch a.trackPoints WHERE a.id = :id", Activity.class)
                 .setParameter("id", id)
                 .getSingleResult();
         em.close();

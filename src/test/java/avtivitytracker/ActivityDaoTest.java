@@ -15,6 +15,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -114,20 +116,29 @@ public class ActivityDaoTest {
         assertThat(LocalDate.of(2021, 07, 16), equalTo(anotherActivity.getTrackPoints().get(1).getTime()));
     }
 
-//    @Test
-//    public void testAddTrackPointListThenListById() {
-//        TrackPoint trackPoint1 = new TrackPoint(LocalDate.of(2021, 07, 13), 41.2, 45.5);
-//        TrackPoint trackPoint2 = new TrackPoint(LocalDate.of(2021, 07, 16), 39.6, 44.1);
-//        TrackPoint trackPoint3 = new TrackPoint(LocalDate.of(2021, 07, 20), 40.5, 46.2);
-//
-//        Activity activity = new Activity(LocalDateTime.now(), "Marathon running in Munich", ActivityType.RUNNING);
-//        activity.addTrackPoint(trackPoint1);
-//        activity.addTrackPoint(trackPoint2);
-//        activity.addTrackPoint(trackPoint3);
-//
-//        activityDao.saveActivity(activity);
-//        Activity anotherActivity = activityDao.findActivityByIdWithTrackPoints(activity.getId());
-//        assertThat(LocalDate.of(2021, 07, 16), equalTo(anotherActivity.getTrackPoints().get(1).getTime()));
-//    }
+    @Test
+    public void testFindActivityByIdWithTrackPoints() {
+        TrackPoint trackPoint1 = new TrackPoint(LocalDate.of(2020, 07, 13), 41.2, 45.5);
+        TrackPoint trackPoint2 = new TrackPoint(LocalDate.of(2019, 07, 16), 39.6, 44.1);
+        TrackPoint trackPoint3 = new TrackPoint(LocalDate.of(2018, 07, 20), 40.5, 46.2);
+        TrackPoint trackPoint4 = new TrackPoint(LocalDate.of(2017, 07, 21), 41.5, 47.2);
+        TrackPoint trackPoint5 = new TrackPoint(LocalDate.of(2021, 07, 22), 42.5, 48.2);
+
+        Activity activity = new Activity(LocalDateTime.now(), "Marathon running in Munich", ActivityType.RUNNING);
+        activity.setLabels(new ArrayList<>(List.of("bike", "wheel", "pump")));
+
+        activity.addTrackPoint(trackPoint1);
+        activity.addTrackPoint(trackPoint2);
+        activity.addTrackPoint(trackPoint3);
+        activity.addTrackPoint(trackPoint4);
+        activity.addTrackPoint(trackPoint5);
+
+        activityDao.saveActivity(activity);
+        Activity anotherActivity = activityDao.findActivityByIdWithTrackPoints(activity.getId());
+        System.out.println(anotherActivity.getTrackPoints());
+        assertThat(anotherActivity.getTrackPoints())
+                .extracting(TrackPoint::getLat)
+                .contains(41.2, 41.5);
+    }
 
 }
